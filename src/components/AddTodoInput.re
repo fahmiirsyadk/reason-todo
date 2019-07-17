@@ -1,5 +1,3 @@
-open Types;
-
 let valueFromEvent = (evt): string => evt->ReactEvent.Form.target##value;
 
 [@react.component]

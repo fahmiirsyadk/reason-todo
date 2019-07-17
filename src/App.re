@@ -17,6 +17,7 @@ type state = {todos: list(todo)};
 type action =
   | AddItem(string)
   | ToggleItem(int)
+  | DeleteItem(int)
   | StartEditingItem(int)
   | FinishEditingItem(int, string);
 
@@ -40,6 +41,9 @@ let make = () => {
                 todo.id == id ? {...todo, completed: !todo.completed} : todo,
               state.todos,
             );
+          {todos: todos};
+        | DeleteItem(id) =>
+          let todos = List.filter(todo => todo.id != id, state.todos);
           {todos: todos};
         | StartEditingItem(id) =>
           let todos =
@@ -74,6 +78,7 @@ let make = () => {
              <TodoItem
                key={string_of_int(todo.id)}
                onToggle={() => dispatch(ToggleItem(todo.id))}
+               onDelete={() => dispatch(DeleteItem(todo.id))}
                onEditStart={() => dispatch(StartEditingItem(todo.id))}
                onEditDone={text =>
                  dispatch(FinishEditingItem(todo.id, text))
