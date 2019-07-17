@@ -16,9 +16,9 @@ let main = styl(~padding="10px 15px", ());
 type state = {todos: list(todo)};
 type action =
   | AddItem(string)
-  | ToggleItem(int);
-//   | StartEditingItem(int)
-//   | FinishEditingItem(int, string);
+  | ToggleItem(int)
+  | StartEditingItem(int)
+  | FinishEditingItem(int, string);
 
 let lastId = ref(0);
 let newItem = (~text as title) => {
@@ -41,6 +41,23 @@ let make = () => {
               state.todos,
             );
           {todos: todos};
+        | StartEditingItem(id) =>
+          let todos =
+            List.map(
+              todo =>
+                todo.id == id
+                  ? {...todo, edit: true} : {...todo, edit: false},
+              state.todos,
+            );
+          {todos: todos};
+        | FinishEditingItem(id, text) =>
+          let todos =
+            List.map(
+              todo =>
+                todo.id == id ? {...todo, edit: false, title: text} : todo,
+              state.todos,
+            );
+          {todos: todos};
         },
       {todos: [{id: 0, title: "something", completed: true, edit: false}]},
     );
@@ -57,6 +74,10 @@ let make = () => {
              <TodoItem
                key={string_of_int(todo.id)}
                onToggle={() => dispatch(ToggleItem(todo.id))}
+               onEditStart={() => dispatch(StartEditingItem(todo.id))}
+               onEditDone={text =>
+                 dispatch(FinishEditingItem(todo.id, text))
+               }
                todo
              />,
            todos,
