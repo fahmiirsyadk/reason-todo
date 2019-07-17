@@ -46,12 +46,6 @@ let make = () => {
     );
 
   let itemLength = List.length(todos);
-  let numTodos =
-    switch (itemLength) {
-    | 0 => " todo"
-    | 1 => " todo"
-    | _ => " todos"
-    };
 
   <div style=container>
     <Header title="My todo" />
@@ -70,7 +64,7 @@ let make = () => {
          |> Array.of_list
          |> React.array}
       </div>
-      <footer> {str("0 item")} </footer>
+      <Footer itemLength />
     </div>
   </div>;
 };
