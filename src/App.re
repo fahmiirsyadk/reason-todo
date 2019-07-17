@@ -1,17 +1,24 @@
-open Utils;
+// open Utils;
 open Types;
+open Css;
 
-let container =
-  styl(
-    ~width="500px",
-    ~overflow="hidden",
-    ~backgroundColor="white",
-    ~margin="10px auto",
-    ~borderRadius="3px",
-    (),
-  );
+global(
+  "body",
+  [backgroundColor(`hex("5c75e2")), fontFamily("'Open Sans', sans-serif")],
+);
+global("*", [margin(`zero), padding(`zero), boxSizing(`borderBox)]);
 
-let main = styl(~padding="10px 15px", ());
+module Styles = {
+  let container =
+    style([
+      width(px(500)),
+      overflow(`hidden),
+      backgroundColor(white),
+      margin2(~v=px(10), ~h=`auto),
+      borderRadius(px(3)),
+    ]);
+  let main = style([padding2(~v=px(10), ~h=px(15))]);
+};
 
 type state = {todos: list(todo)};
 type action =
@@ -68,9 +75,9 @@ let make = () => {
 
   let itemLength = List.length(todos);
 
-  <div style=container>
+  <div className=Styles.container>
     <Header title="My todo" />
-    <div style=main>
+    <div className=Styles.main>
       <AddTodoInput onSubmit={text => dispatch(AddItem(text))} />
       <div>
         {List.map(
