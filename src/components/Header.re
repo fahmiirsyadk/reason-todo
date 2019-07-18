@@ -1,14 +1,18 @@
 open Utils;
 
-let header =
-  styl(
-    ~width="inherit",
-    ~fontWeight="bold",
-    ~textAlign="center",
-    ~padding="10px 0",
-    ~fontSize="1.2rem",
-    (),
-  );
+module Styles = {
+  let header =
+    Css.(
+      style([
+        width(`auto),
+        fontWeight(`bold),
+        textAlign(`center),
+        padding2(~v=px(10), ~h=`zero),
+        fontSize(rem(1.2)),
+      ])
+    );
+};
 
 [@react.component]
-let make = (~title) => <header style=header> {str(title)} </header>;
+let make = (~title) =>
+  <header className=Styles.header> {str(title)} </header>;
